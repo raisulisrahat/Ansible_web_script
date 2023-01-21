@@ -1,0 +1,21 @@
+---
+# vars file for lemp-server
+
+packages:
+  - git
+  - wget
+  - tree
+  - php
+  - python2
+  - curl
+  - nano
+  - vim
+  - rsync
+  - unzip
+  - resolvconf
+
+webpackages:
+  - nginx
+  - php
+  - mariadb-server
+  - mariadb-client

@@ -1,0 +1,7 @@
+---
+- hosts: ubuntu
+  roles: 
+    - LEMP-Stack
+    #- MERN-Stack
+    #- Win-Wordpres-Stack
+    #- Wordpress-Stack

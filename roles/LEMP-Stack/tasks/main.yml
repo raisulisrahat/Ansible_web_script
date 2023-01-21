@@ -1,0 +1,56 @@
+---
+# tasks file for lemp-server
+- name: Create a user 'webserver'
+  user:
+    name: webserver
+    shell: /bin/bash
+    groups: sudo
+    append: yes
+
+- name: Add webserver user to sudo group
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^webserver'
+    line: 'webserver ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+
+- name: Install Requitements packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items: "{{ packages }}"
+
+- name: Install web Pasckage
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items: "{{ webpackages }}"
+
+- name: ensure Apache2 is not installed
+  ansible.builtin.apt:
+    pkg: apache2
+    state: absent
+
+- name: Setup Nginx Congfig file
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-enabled/default
+  notify: Restart Nginx
+
+- name: Create a public_html directory 
+  ansible.builtin.file:
+    path: /home/webserver/public_html
+    state: directory
+    mode: '0755'
+
+- name: Download Web Page templete
+  ansible.builtin.git:
+    repo: 'https://github.com/raisulisrahat/Assignment-2.git'
+    dest: /home/webserver/public_html/
+    clone: yes
+    update: yes
+  notify: Restart Nginx
+
