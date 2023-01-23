@@ -1,7 +1,7 @@
 ---
-- hosts: ubuntu
+- hosts: server #Centos #Ubuntu
   roles: 
-    - LEMP-Stack
+    #- LEMP-Stack
     #- MERN-Stack
     #- Win-Wordpres-Stack
-    #- Wordpress-Stack
+    - Wordpress-Stack

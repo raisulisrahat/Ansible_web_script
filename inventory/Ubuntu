@@ -1,3 +1,4 @@
-[ubuntu]
-192.168.0.5 ansible_ssh_user=root
+[server]
+192.168.0.7 ansible_ssh_user=root
+#192.168.0.5 ansible_ssh_user=root
 

@@ -1,2 +1,78 @@
 ---
 # tasks file for roles/Wordpress-Stack
+
+# - name: Install all requemants packages
+#   ansible.builtin.package:
+#     name: "{{ item }}"
+#     state: latest
+#     update_cache: yes
+#   with_items: "{{ APTpackages }}" 
+
+# # - name: Install all requemants packages
+# #   ansible.builtin.package:
+# #     name: "{{ item }}"
+# #     state: latest
+# #     update_cache: yes
+# #   with_items: "{{ YUMpackages }}"  
+
+# - name: Install Web server packages
+#   ansible.builtin.package:
+#     name: "{{ item }}"
+#     state: latest
+#     update_cache: yes
+#   with_items: "{{ webpackages }}"
+
+# - name: Setup Nginx Conf file
+#   template: 
+#     src: sites-available/nginx.conf
+#     dest: /etc/nginx/sites-enabled/default
+#   notify: Restart Nginx
+
+# - name: Moving Nginx Config file
+#   template:       
+#     src: nginx.conf
+#     dest: /etc/nginx/nginx.conf
+#   notify: Restart Nginx
+
+# - name: Create a public_html directory 
+#   ansible.builtin.file:
+#     path: /etc/nginx/nginxconfig.io
+#     state: directory
+#     mode: '0755'
+#     owner: root
+#     group: root
+
+- name: Additional Nginx Config file
+  template:        
+    src: nginxconfig.io.zip
+    dest: /etc/nginx/nginxconfig.io.zip
+
+- name: Uzip nginxconfig.io file
+  unarchive: 
+    src:  /etc/nginx/nginxconfig.io.zip 
+    dest: /etc/nginx/
+    exclude:
+      - "/etc/nginx/nginxconfig.io/*"
+    remote_src: yes
+    with_items:
+    - zip
+    - tar
+    register: nginxconfig_io 
+  notify: Restart Nginx
+
+- name: Debug additional Nginxconfig
+  debug:
+    msg: "{{ nginxconfig_io }}"
+
+- name: Remove Additional Nginx Conf File
+  ansible.builtin.file:
+    path: /etc/nginx/nginxconfig.io.zip
+    state: absent
+
+- name: Create a public_html directory 
+  ansible.builtin.file:
+    path: /var/www/public_html
+    state: directory
+    mode: '0755'
+    owner: www-data
+    group: www-data

@@ -1,2 +1,29 @@
 ---
 # vars file for roles/Wordpress-Stack
+
+YUMpackages:
+  - curl
+  - wget
+  - zip
+  - unzip
+  - git
+  - ca-certificates 
+  - epel-release
+  - yum-utils
+
+APTpackages:
+  - curl
+  - wget
+  - zip
+  - unzip
+  - git
+  - ca-certificates 
+  - lsb-release
+  - apt-utils
+
+webpackages:
+  - nginx
+  - php-fpm
+  - php-mysql
+  - mariadb-server
+  - mariadb-client

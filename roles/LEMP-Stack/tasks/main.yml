@@ -16,21 +16,21 @@
     validate: 'visudo -cf %s'
 
 - name: Install Requitements packages
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: latest
     update_cache: yes
   with_items: "{{ packages }}"
 
 - name: Install web Pasckage
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: latest
     update_cache: yes
   with_items: "{{ webpackages }}"
 
 - name: ensure Apache2 is not installed
-  ansible.builtin.apt:
+  ansible.builtin.package:
     pkg: apache2
     state: absent
 
