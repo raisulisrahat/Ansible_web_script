@@ -14,3 +14,11 @@
   service:
     name: php-fpm
     state: restarted
+
+- name: Reload CentOS Firewall
+  ansible.builtin.command:
+    cmd: firwall-cmd reload
+
+- name: Reload Ubuntu Firewall
+  ansible.builtin.command:
+    cmd: ufw reload

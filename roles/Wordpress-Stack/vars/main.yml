@@ -1,7 +1,6 @@
 ---
 # vars file for roles/Wordpress-Stack
-
-YUMpackages:
+Apt_packages:
   - curl
   - wget
   - zip
@@ -11,7 +10,7 @@ YUMpackages:
   - epel-release
   - yum-utils
 
-APTpackages:
+Yum_packages:
   - curl
   - wget
   - zip
