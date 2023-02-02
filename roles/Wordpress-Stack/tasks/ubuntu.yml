@@ -1,5 +1,5 @@
 ---
-# # task for ubuntu
+# task for ubuntu
 - name: Install all requemants packages
   ansible.builtin.package:
     name: "{{ item }}"
@@ -117,6 +117,8 @@
 - name: directory permision
   ansible.builtin.file:
     path: /var/www/wordpress
+    state: directory
+    recurse: true
     mode: '0755'
     owner: www-data
     group: www-data
