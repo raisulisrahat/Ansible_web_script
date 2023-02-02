@@ -17,7 +17,7 @@
 - name: Setup Nginx Conf file
   template: 
     src: sites-available/nginx.conf
-    dest: /etc/nginx/sites-enabled/default
+    dest: /etc/nginx/nginx.conf/default
   notify: Restart Nginx
 
 - name: Moving Nginx Config file
@@ -49,14 +49,6 @@
     path: /etc/nginx/nginxconfig.io.zip
     state: absent
 
-- name: Create a public_html directory 
-  ansible.builtin.file:
-    path: /var/www/public_html
-    state: directory
-    mode: '0755'
-    owner: www-data
-    group: www-data
-
 - name: Enable Firewall
   firewalld:
     rule: allow
@@ -67,5 +59,59 @@
     - '443'
   notify: Reload CentOS Firewall
 
-# - name: Creata a mysql DB for Wordpress
-#   community.mysql.mysql_db:
+- name: Install all requemants packages
+  ansible.builtin.pip:
+    name: PyMySQL
+    state: latest
+
+- name: Configure MySQL root password
+  mysql_user: 
+    name: root 
+    password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Create new MySQL database
+  mysql_db: 
+    name: "{{ mysql_database }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: Create new MySQL user
+  mysql_user: 
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: Grant privileges to new user
+  mysql_user: 
+    name: "{{ mysql_user }}"
+    priv: "{{ mysql_database }}.*:ALL"
+    host: '%'
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: Downloading Wordpress file
+  get_url:
+    url: https://wordpress.org/latest.tar.gz
+    dest: /var/www/wordpress.tar
+
+- name: Unarchive wordpress file
+  ansible.builtin.unarchive:
+    src: /var/www/wordpress.tar
+    dest: /var/www
+    remote_src: yes
+
+- name: Move a file name
+  template:
+    src: wp-config.php.j2
+    dest: /var/www/wordpress/wp-config.php
+
+- name: directory permision
+  ansible.builtin.file:
+    path: /var/www/wordpress
+    mode: '0755'
+    owner: nginx
+    group: nginx

@@ -54,3 +54,27 @@
     update: yes
   notify: Restart Nginx
 
+- name: Configure MySQL root password
+  mysql_user: 
+    name: root 
+    password: {{ mysql_root_password }} 
+    host: '%'
+
+- name: Create new MySQL database
+  mysql_db: 
+    name: {{ mysql_database }} 
+    state: present
+
+- name: Create new MySQL user
+  mysql_user: 
+    name: {{ mysql_user }}
+    password: {{ mysql_password }} 
+    priv: '*.*:ALL'
+    host: '%'
+
+- name: Grant privileges to new user
+  mysql_user: 
+    name: {{ mysql_user }}
+    priv: "{{ mysql_database }}.*:ALL"
+    host: '%'
+    state: present

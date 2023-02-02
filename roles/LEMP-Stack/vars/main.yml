@@ -19,3 +19,8 @@ webpackages:
   - php
   - mariadb-server
   - mariadb-client
+
+mysql_root_password: "rootpassword"
+mysql_database: "newdatabase"
+mysql_user: "newuser"
+mysql_password: "userpassword"
