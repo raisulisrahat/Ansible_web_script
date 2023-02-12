@@ -4,4 +4,6 @@
     #- LEMP-Stack
     #- MERN-Stack
     #- Win-Wordpres-Stack
-    - Wordpress-Stack
+    #- Wordpress-Stack
+    - Docker
+    - Docker_Wordpress-Stack

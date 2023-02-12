@@ -1,0 +1,19 @@
+---
+# tasks file for Docker_Wordpress-Stack
+- name: Install all requemants packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items: "{{ Package }}"  
+
+- name: Install and upgrade pip
+  pip:
+    name: pip
+    extra_args: --upgrade
+    executable: pip3
+
+- name: Install all requemants packages
+  ansible.builtin.pip:
+    name: docker
+    state: latest

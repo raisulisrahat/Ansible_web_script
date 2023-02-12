@@ -1,0 +1,15 @@
+---
+# vars file for Docker_Wordpress-Stack
+Package:
+  - curl
+  - wget
+  - zip
+  - unzip
+  - git
+  - ca-certificates 
+  - lsb-release
+  - apt-utils
+  - python2
+  - python3
+  - python3-pip
+  
