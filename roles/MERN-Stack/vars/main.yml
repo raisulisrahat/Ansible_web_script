@@ -1,2 +1,7 @@
 ---
 # vars file for roles/MERN-Stack
+Mongodb:
+  - mongodb-org
+  - mongodb-org-database 
+  - mongodb-org-server 
+  - mongodb-org-mongos 

@@ -1,5 +1,20 @@
 ---
 # tasks file for Docker_Wordpress-Stack
+- name: Create a user 'webserver'
+  user:
+    name: webserver
+    shell: /bin/bash
+    groups: sudo,docker
+    append: yes
+
+# - name: Add webserver user to sudo group
+#   lineinfile:
+#     path: /etc/sudoers
+#     state: present
+#     regexp: '^webserver'
+#     line: 'webserver ALL=(ALL) NOPASSWD: ALL'
+#     validate: 'visudo -cf %s'
+
 - name: Install all requemants packages
   ansible.builtin.package:
     name: "{{ item }}"
@@ -15,5 +30,61 @@
 
 - name: Install all requemants packages
   ansible.builtin.pip:
-    name: docker
+    name: "{{ item }}"
     state: latest
+  with_items: 
+    - "docker"
+    - "docker-compose"
+
+- name: Copy Compose file
+  templates:
+    src: templates/
+    dest: /home/webserver
+
+- name: Create a network
+  docker_network:
+    name: network_WP
+
+- name: Create a volume
+  docker_volume:
+    name: volume_WP
+
+- name: Wordpress Compose Up
+  docker_compose:
+    project_src: /home/webserver/
+    state: present
+
+- name: setup Nginx-proxy
+  package:
+    name: nginx
+    state: present
+    
+  
+# - name: remove nginx old conf
+#   command:
+#     cmd: rm -rf /etc/nginx/sites-enabled/default
+
+# - name: Setup nginx proxy file
+#   copy:
+#     src: templates/nginx.conf.j2
+#     dest: /etc/nginx/sites-enabled/proxy
+#   notify: Restart Nginx
+
+- name: Enable Firewall
+  community.general.ufw:
+    rule: allow
+    name: "{{ item }}"
+  with_items:
+    - 'OpenSSH'
+    - 'Nginx Full'
+  notify: Reload Ubuntu Firewall
+
+- name: Enable Firewall
+  community.general.ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - '80'
+    - '443'
+  notify: Reload Ubuntu Firewall

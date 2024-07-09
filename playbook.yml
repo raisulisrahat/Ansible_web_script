@@ -1,9 +1,12 @@
 ---
-- hosts: server #Centos #Ubuntu
+- hosts: 
+  - Centos 
+  # - Ubuntu
+  # - Windows
   roles: 
-    #- LEMP-Stack
-    #- MERN-Stack
-    #- Win-Wordpres-Stack
-    #- Wordpress-Stack
-    - Docker
-    - Docker_Wordpress-Stack
+    - LEMP-Stack
+    # - MERN-Stack
+    # - Win-Wordpres-Stack
+    # - Wordpress-Stack
+    # - Docker
+    # - Docker_Wordpress-Stack

@@ -1,0 +1,52 @@
+version: '3.2'
+services:
+#Mariadb
+  mariadb:
+    image: mariadb:10.9.5-jammy
+    volumes:
+      - 'mariadb_data:/var/lib/mysql'
+    environment:
+      - MARIADB_ROOT_PASSWORD=P@ssW0rD
+      - MARIADB_USER=admin
+      - MARIADB_DATABASE=Wordpress
+      - MARIADB_PASSWORD=P@ssW0rD
+    restart: always
+
+# #Phpmyadmin
+#   phpmyadmin:
+#     image: phpmyadmin:5.2.1-fpm
+#     volumes:
+#       - 'phpmyadmin_data:/var/www/phpmyadmin'
+#     restart: always
+#     ports:
+#       - '80:8082'
+#       - '443:8443'
+
+#Wordpress    
+  wordpress:
+    image: bitnami/wordpress-nginx:6.1.1
+    volumes:
+      - 'wordpress_data:/var/www/wordpress'
+    depends_on:
+      - mariadb
+    environment:
+      - WORDPRESS_DATABASE_HOST=localhost
+      - WORDPRESS_DATABASE_PORT_NUMBER=3306
+      - WORDPRESS_DATABASE_USER=admin
+      - WORDPRESS_DATABASE_NAME=Wordpress
+      - WORDPRESS_DATABASE_PASSWORD=P@ssW0rD
+    mem_limit: 512m
+    mem_reservation: 128M
+    cpus: 0.5
+    ports:
+      - '80:8080'
+      - '443:8443'
+
+
+volumes:
+  mariadb_data:
+    driver: local
+  wordpress_data:
+    driver: local
+  phpmyadmin_data:
+    driver: local

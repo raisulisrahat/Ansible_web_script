@@ -13,3 +13,11 @@ Package:
   - python3
   - python3-pip
   
+phpmyadmin_version: 5.2.1-fpm
+wordpress_version: 6.1.1
+mariadb_version: 10.9.5-jammy
+
+
+mariadb_user: admin
+mariadb_pass: P@ssW0rD
+mariadb_db: wordpress

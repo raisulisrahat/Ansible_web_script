@@ -1,2 +1,57 @@
 ---
 # tasks file for roles/MERN-Stack
+
+- name: Add MongoDB key
+  get_url:
+    url:  https://www.mongodb.org/static/pgp/server-6.0.asc
+    dest: /etc/apt/trusted.gpg.d/mongodb-org-6.0.asc
+
+- name:  Add MongoDB repository
+  apt_repository:
+    repo:  "deb [ arch=amd64 signed-by=/etc/apt/trusted.gpg.d/mongodb-org-6.0.asc] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse"
+    state: present
+    update_cache: yes
+
+- name: Install MongoDB
+  package:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items: "{{ Mongodb }}"
+
+- name: MongoDB configuration
+  copy:
+    src: mongod.conf.j2
+    dest: /etc/mongod.conf
+  notify: MongoDB Restart
+
+- name: Add NodeJS key
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+
+- name: Add NodeJS repository
+  apt_repository:
+    repo: deb https://deb.nodesource.com/node_18.x {{ ansible_lsb.codename }} main
+    state: present
+    update_cache: yes
+
+- name: Install NodeJS
+  apt:
+    name: nodejs
+    state: present
+    update_cache: yes
+    
+- name: Install Nginx
+  package:
+    name: nginx
+    state: latest
+    update_cache: yes
+
+- name: Nginx configuration
+  copy:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-enabled/default
+  notify: Nginx Restart
+
+- name: Docker Compose

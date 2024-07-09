@@ -1,2 +1,10 @@
 ---
 # handlers file for Docker_Wordpress-Stack
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: Reload Ubuntu Firewall
+  ansible.builtin.command:
+    cmd: ufw reload

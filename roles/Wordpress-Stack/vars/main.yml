@@ -37,7 +37,3 @@ webpackages:
   - mysql-server
   - mysql-client
 
-mysql_root_password: 'p@ssW0rd'
-mysql_database: "wordpress"
-mysql_user: "admin"
-mysql_password: "P@ssW0rd"

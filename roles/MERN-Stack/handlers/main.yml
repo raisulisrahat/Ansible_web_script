@@ -1,2 +1,11 @@
 ---
 # handlers file for roles/MERN-Stack
+- name: MongoDB Restart
+  service:
+    name: mongod
+    state: restarted
+
+- name: Nginx Restart
+  service:
+    name: nginx
+    state: restarted

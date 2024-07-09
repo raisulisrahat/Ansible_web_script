@@ -46,19 +46,11 @@
     state: directory
     mode: '0755'
 
-- name: Download Web Page templete
-  ansible.builtin.git:
-    repo: 'https://github.com/raisulisrahat/Assignment-2.git'
-    dest: /home/webserver/public_html/
-    clone: yes
-    update: yes
-  notify: Restart Nginx
-
-- name: Configure MySQL root password
-  mysql_user: 
-    name: root 
-    password: {{ mysql_root_password }} 
-    host: '%'
+# - name: Configure MySQL root password
+#   mysql_user: 
+#     name: root 
+#     password: {{ mysql_root_password }} 
+#     host: '%'
 
 - name: Create new MySQL database
   mysql_db: 
